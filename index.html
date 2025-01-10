@@ -241,24 +241,24 @@
         resultText = 'Não use';
         resultClass = 'red';
       } else if (critValue >= 8 && critValue < 17) {
-        resultText = 'Medíocre';
+        resultText = 'Relíquia Medíocre';
         resultClass = 'orange';
       } else if (critValue >= 17 && critValue < 25) {
-        resultText = 'Usável';
+        resultText = 'Relíquia Usável';
         resultClass = 'yellow';
       } else if (critValue >= 25 && critValue < 33) {
-        resultText = 'Ótima';
+        resultText = 'Relíquia Ótima';
         resultClass = 'green';
       } else if (critValue >= 33 && critValue < 42) {
-        resultText = 'Excepcional';
+        resultText = 'Relíquia Excepcional';
         resultClass = 'blue';
       } else if (critValue >= 42) {
-        resultText = 'Divina';
+        resultText = 'Relíquia Divina';
         resultClass = 'purple';
       }
 
       // Exibição do Resultado
-      document.getElementById('result').innerText = `Valor Crítico: ${resultText}`;
+      document.getElementById('result').innerText = `Valor Crítico: ${resultText} | Valor do Cálculo: ${critValue}`;
       document.getElementById('result').className = `result ${resultClass}`;
     }
 

@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Calculadora de Valor Crítico para jogos com Taxa Crítica e Dano Crítico">
+  <meta name="keywords" content="calculadora, crit rate, crit damage, jogos, RPG">
+  <title>Calculadora de Valor Crítico</title>
+  <style>
+    /* Estilos gerais e de layout */
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.8), rgba(0, 0, 0, 0.5)), url('https://upload-os-bbs.hoyolab.com/upload/2024/09/05/295686004/1db084da078dbaf56d25d0897bf1b532_4577576096496865950.jpg');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+
+    /* Container do formulário */
+    .container {
+      background-color: rgba(255, 255, 255, 0.8);
+      border: 3px solid #333;
+      border-radius: 10px;
+      padding: 20px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      width: 600px;
+      text-align: center;
+      position: relative; /* Necessário para o posicionamento do ícone dentro do container */
+      padding-bottom: 60px; /* Ajusta o espaço inferior para o ícone */
+    }
+
+    /* Título */
+    h1 {
+      font-size: 1.5rem;
+      margin-bottom: 20px;
+      color: #333;
+    }
+
+    /* Estilo das labels */
+    label {
+      font-size: 1.1rem;
+      color: #333;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 15px;
+      margin-bottom: 10px;
+      text-align: center;
+    }
+
+    label img {
+      width: 30px;
+      height: 30px;
+    }
+
+    /* Estilo para inputs */
+    input {
+      width: 80%;
+      padding: 8px;
+      margin: 5px 0;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+    }
+
+    /* Distância entre os campos de input */
+    .input-group {
+      margin-bottom: 20px;
+    }
+
+    /* Estilo para os botões */
+    button {
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: background-color 0.3s ease, transform 0.3s ease;
+      width: auto;
+      flex: 1;
+    }
+
+    /* Botão "Calcular" com cor azul */
+    button.calculate {
+      background-color: #007bff;
+    }
+
+    button.calculate:hover {
+      background-color: #0056b3;
+      transform: scale(1.05);
+    }
+
+    /* Botão "Limpar" com cor laranja */
+    button.clear {
+      background-color: #ffa500;
+    }
+
+    button.clear:hover {
+      background-color: #e68900;
+      transform: scale(1.05);
+    }
+
+    /* Botões alinhados ao lado */
+    .buttons-container {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+    }
+
+    .buttons-container button {
+      width: auto;
+      flex: 1;
+    }
+
+    /* Estilo do resultado */
+    .result {
+      margin-top: 20px;
+      padding: 10px;
+      font-size: 1rem;
+      font-weight: bold;
+      border-radius: 5px;
+    }
+
+    .red { background-color: red; color: white; }
+    .orange { background-color: orange; color: black; }
+    .yellow { background-color: yellow; color: black; }
+    .green { background-color: green; color: white; }
+    .blue { background-color: blue; color: white; }
+    .purple { background-color: purple; color: white; }
+
+    /* Foco visível para acessibilidade */
+    input:focus, button:focus {
+      outline: 2px solid #007bff;
+    }
+
+    /* Responsividade para telas pequenas */
+    @media (max-width: 600px) {
+      .container {
+        width: 90%;
+      }
+      h1 {
+        font-size: 1.2rem;
+      }
+      input, button {
+        width: 100%;
+      }
+    }
+
+    /* Ícone do Bluesky no canto inferior direito do container */
+    .bluesky-icon {
+      position: absolute;
+      bottom: 10px;
+      right: 10px;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background-color: white;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+      overflow: hidden;
+    }
+
+    .bluesky-icon img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Calculadora de Valor Crítico (por Jenqiu)</h1>
+    <form id="critForm">
+      <div class="input-group">
+        <label for="critRate">
+          <img src="https://static.wikia.nocookie.net/houkai-star-rail/images/f/ff/Icon_CRIT_Rate.png/revision/latest?cb=20230506172325" alt="Crit Rate">
+          Taxa Crítica | Crit Rate (%):
+        </label>
+        <input type="number" id="critRate" step="0.1" required><br>
+      </div>
+
+      <div class="input-group">
+        <label for="critDamage">
+          <img src="https://static.wikia.nocookie.net/houkai-star-rail/images/b/b2/Icon_CRIT_DMG.png/revision/latest?cb=20230506180215" alt="Crit Damage">
+          Dano Crítico | Crit Damage (%):
+        </label>
+        <input type="number" id="critDamage" step="0.1" required><br>
+      </div>
+
+      <!-- Contêiner de botões -->
+      <div class="buttons-container">
+        <button type="button" onclick="calculateCritValue()" class="calculate" aria-label="Calcular valor crítico">Calcular</button>
+        <button type="button" onclick="clearForm()" class="clear" aria-label="Limpar campos">Limpar</button>
+      </div>
+    </form>
+    <div id="result" class="result"></div>
+
+    <!-- Ícone do Bluesky dentro do container -->
+    <a href="https://bsky.app/profile/genqiu.bsky.social" target="_blank" class="bluesky-icon" title="Bluesky">
+      <img src="https://eurogen-ern.eu/wp-content/uploads/2024/02/Bluesky-icon.jpeg" alt="Bluesky">
+    </a>
+  </div>
+
+  <script>
+    function calculateCritValue() {
+      const critRate = parseFloat(document.getElementById('critRate').value) || 0;
+      const critDamage = parseFloat(document.getElementById('critDamage').value) || 0;
+
+      // Validação dos valores de entrada
+      if (critRate < 0 || critRate > 100) {
+        alert('A Taxa Crítica deve ser entre 0 e 100.');
+        document.getElementById('critRate').style.borderColor = 'red';
+        return;
+      } else {
+        document.getElementById('critRate').style.borderColor = '';
+      }
+
+      if (critDamage < 0 || critDamage > 100) {
+        alert('O Dano Crítico deve ser entre 0 e 100.');
+        document.getElementById('critDamage').style.borderColor = 'red';
+        return;
+      } else {
+        document.getElementById('critDamage').style.borderColor = '';
+      }
+
+      // Cálculo do Valor Crítico
+      const critValue = (critRate * 2) + critDamage;
+
+      // Determinação do Resultado
+      let resultText = '';
+      let resultClass = '';
+
+      if (critValue < 8) {
+        resultText = 'Não use';
+        resultClass = 'red';
+      } else if (critValue >= 8 && critValue < 17) {
+        resultText = 'Medíocre';
+        resultClass = 'orange';
+      } else if (critValue >= 17 && critValue < 25) {
+        resultText = 'Usável';
+        resultClass = 'yellow';
+      } else if (critValue >= 25 && critValue < 33) {
+        resultText = 'Ótima';
+        resultClass = 'green';
+      } else if (critValue >= 33 && critValue < 42) {
+        resultText = 'Excepcional';
+        resultClass = 'blue';
+      } else if (critValue >= 42) {
+        resultText = 'Divina';
+        resultClass = 'purple';
+      }
+
+      // Exibição do Resultado
+      document.getElementById('result').innerText = `Valor Crítico: ${resultText}`;
+      document.getElementById('result').className = `result ${resultClass}`;
+    }
+
+    function clearForm() {
+      document.getElementById('critRate').value = '';
+      document.getElementById('critDamage').value = '';
+      document.getElementById('result').innerText = '';
+      document.getElementById('result').className = 'result';
+    }
+  </script>
+</body>
+</html>
